@@ -64,3 +64,6 @@ Incluye:
 * Diagramas UML (por módulo)
 * Manual de usuario básico
 
+**[Documentación del proyecto en Word](https://unisonmx-my.sharepoint.com/:w:/g/personal/a223209555_unison_mx/EUCIc7ja_NdDhikQvTMYo6cBWRRuAgZllp-zFyig4WNrHA?e=9ywyhN)**
+
+
