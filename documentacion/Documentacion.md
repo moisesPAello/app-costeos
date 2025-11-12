@@ -1,137 +1,107 @@
-# 🧩 Descripción de Módulos - CostManager Web App
+# 📁 Documentación UML - CostManager Web App
 
-El sistema se compone de **cinco módulos principales**, cada uno con responsabilidades específicas dentro del proceso de costeo estándar. A continuación se detalla su función, entradas, salidas y actores involucrados.
-
----
-
-## 1. Autenticación (`auth`)
-**Propósito:**  
-Controlar el acceso a la aplicación. Permitir el inicio de sesión y registro de usuarios con permisos básicos.
-
-**Funciones clave:**
-- Registro de nuevos usuarios.
-- Inicio y cierre de sesión.
-- Validación de credenciales.
-- Control de acceso a los demás módulos.
-
-**Entradas:**
-- Usuario, contraseña.
-
-**Salidas:**
-- Token o sesión activa.
-
-**Actores:**  
-Administrador, Usuario general.
+Este folder contiene los **diagramas UML por módulo** del sistema de costeo estándar. Cada módulo incluye **casos de uso, clases, secuencia, estados, actividades y componentes**.
 
 ---
 
-## 2. Gestión de Estándares (`standards`)
-**Propósito:**  
-Registrar y mantener los valores estándar de materiales directos y mano de obra directa, base para los cálculos de variación.
+## 🧩 Módulos principales
 
-**Funciones clave:**
-- Registrar materiales directos (nombre, cantidad estándar, precio estándar).
-- Registrar mano de obra directa (horas estándar, tarifa estándar).
-- Calcular costo estándar unitario (PS × QS).
-- Editar o eliminar estándares existentes.
+1. **Autenticación**
+   - Registro y login de usuarios (opcional, si se requiere manejo de sesiones)
+   - Control básico de acceso para datos de costeo
 
-**Entradas:**
-- Datos de materiales y mano de obra estándar.
+2. **Gestión de Estándares**
+   - Registro de materiales y mano de obra estándar
+   - Cálculo de costos estándar unitarios (PS × QS)
 
-**Salidas:**
-- Tabla de estándares con costo unitario.
-- Archivo JSON o CSV con datos guardados.
+3. **Carga de Datos Reales**
+   - Subida de archivos Excel (`multer`)
+   - Validación y lectura de datos con `xlsx`
 
-**Actores:**  
-Administrador, Analista de costos.
+4. **Cálculo de Variaciones**
+   - Cálculo automático de:
+     - Variación de precio y consumo de materiales
+     - Variación de tarifa y eficiencia de mano de obra
+   - Generación de indicadores favorables/desfavorables
 
----
-
-## 3. Carga de Datos Reales (`realdata`)
-**Propósito:**  
-Permitir al usuario cargar datos reales desde un archivo Excel o introducirlos manualmente para compararlos con los estándares.
-
-**Funciones clave:**
-- Subir archivo Excel con datos reales (con `multer`).
-- Leer y procesar datos con `xlsx`.
-- Validar estructura del archivo.
-- Registrar datos reales temporalmente.
-
-**Entradas:**
-- Archivo Excel o formulario con valores reales: QR, PR, HR, TR.
-
-**Salidas:**
-- Datos reales listos para el cálculo de variaciones.
-
-**Actores:**  
-Analista de costos, Operador.
+5. **Reportes y Visualización**
+   - Generación de reportes visuales (Chart.js)
+   - Exportación de resultados a Excel o PDF
 
 ---
 
-## 4. Cálculo de Variaciones (`variations`)
-**Propósito:**  
-Realizar el análisis de desviaciones entre los costos reales y los estándares para materiales y mano de obra.
+## 📊 Diagramas por módulo
 
-**Funciones clave:**
-- Calcular variaciones de materiales:
-  - Precio: \( VP = (PR - PS) × QR \)
-  - Cantidad: \( VC = (QR - QS) × PS \)
-- Calcular variaciones de mano de obra:
-  - Tarifa: \( VTMOD = (TR - TS) × HR \)
-  - Eficiencia: \( VEMOD = (HR - HS) × TS \)
-- Determinar si la variación es favorable (F) o desfavorable (D).
-- Generar resumen total de variaciones.
+Cada subcarpeta contiene los diagramas UML correspondientes:
 
-**Entradas:**
-- Datos estándar y reales (JSON o CSV).
+### 1. `auth/`
+- `usecase-auth.png`
+- `class-auth.png`
+- `sequence-auth.png`
+- `state-auth.png`
+- `activity-auth.png`
+- `component-auth.png`
 
-**Salidas:**
-- Reporte numérico de variaciones por tipo.
-- Estado F/D por elemento.
+### 2. `standards/`
+- `usecase-standards.png`
+- `class-standards.png`
+- `sequence-standards.png`
+- `state-standards.png`
+- `activity-standards.png`
+- `component-standards.png`
 
-**Actores:**  
-Analista de costos.
+### 3. `realdata/`
+- `usecase-realdata.png`
+- `class-realdata.png`
+- `sequence-realdata.png`
+- `state-realdata.png`
+- `activity-realdata.png`
+- `component-realdata.png`
 
----
+### 4. `variations/`
+- `usecase-variations.png`
+- `class-variations.png`
+- `sequence-variations.png`
+- `state-variations.png`
+- `activity-variations.png`
+- `component-variations.png`
 
-## 5. Reportes y Visualización (`reports`)
-**Propósito:**  
-Presentar los resultados de las variaciones mediante gráficos, tablas y exportación de reportes.
-
-**Funciones clave:**
-- Mostrar variaciones mediante gráficos de barras o pastel (Chart.js).
-- Resumen general de resultados por categoría.
-- Exportar reporte a Excel o PDF.
-- Filtrar por periodo, producto o tipo de variación.
-
-**Entradas:**
-- Datos procesados de variaciones.
-
-**Salidas:**
-- Dashboard visual.
-- Reporte descargable.
-
-**Actores:**  
-Gerente, Analista de costos.
+### 5. `reports/`
+- `usecase-reports.png`
+- `class-reports.png`
+- `sequence-reports.png`
+- `state-reports.png`
+- `activity-reports.png`
+- `component-reports.png`
 
 ---
 
-## 🔗 Interacción entre módulos
+## 🧠 Convenciones
 
-| Módulo origen | Módulo destino | Flujo |
-|----------------|----------------|--------|
-| Auth | Standards / RealData | Control de acceso |
-| Standards | Variations | Envía datos estándar |
-| RealData | Variations | Envía datos reales |
-| Variations | Reports | Envía resultados procesados |
+- Todos los diagramas siguen la notación UML 2.0.
+- Generados en formato `.png` o `.svg`.
+- Los archivos deben nombrarse según el patrón:  
+  `tipo-modulo.png` → ejemplo: `sequence-variations.png`
+- Herramientas recomendadas: **draw.io**, **PlantUML** o **Lucidchart**.
 
 ---
 
-## ⚙️ Flujo general
+## 📂 Estructura de carpetas
 
-1. Usuario inicia sesión.  
-2. Registra los estándares de materiales y mano de obra.  
-3. Carga los datos reales de producción.  
-4. El sistema calcula las variaciones automáticamente.  
-5. Se visualizan y exportan los reportes.
+```
 
+/documentacion
+├── auth/
+│    ├── usecase-auth.png
+│    ├── class-auth.png
+│    ├── ...
+├── standards/
+│    ├── usecase-standards.png
+│    ├── class-standards.png
+│    ├── ...
+├── realdata/
+├── variations/
+├── reports/
+└── README.md
+
+```
