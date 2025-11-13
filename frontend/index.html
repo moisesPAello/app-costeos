@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Costeos & Ingeniería — Inicio</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <h1>Costeos & Ingeniería</h1>
+            <nav class="main-nav">
+                <a href="index.html" class="active">Inicio</a>
+                <a href="calcular.html">Calcular</a>
+                <a href="analizar.html">Analizar</a>
+                <a href="historial.html">Historial</a>
+                <a href="configuracion.html">Configuración</a>
+            </nav>
+            <div class="user-menu">
+                <span id="userDisplay"></span>
+                <button id="logoutBtn" class="btn-logout">Cerrar Sesión</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <h2>Bienvenido</h2>
+            <p>Plataforma profesional para calcular y analizar los costos reales y presupuestados de producción. Gestiona tus proyectos con precisión.</p>
+            <div class="cta">
+                <a href="calcular.html" class="btn">Ir a Calculadora</a>
+                <a href="analizar.html" class="btn secondary">Ir a Análisis</a>
+            </div>
+        </section>
+
+        <!-- FEATURES SECTION -->
+        <section class="features">
+            <article class="feature-card">
+                <h3>💰 Calculadora de Costos</h3>
+                <p>Calcula costos totales y unitarios de forma rápida. Incluye costos fijos, variables y márgenes de ganancia configurables.</p>
+            </article>
+            <article class="feature-card">
+                <h3>📊 Análisis Detallado</h3>
+                <p>Compara costos reales vs presupuestados. Genera reportes visuales y exporta datos para tomar decisiones informadas.</p>
+            </article>
+            <article class="feature-card">
+                <h3>📁 Historial Completo</h3>
+                <p>Guarda todos tus cálculos. Accede al historial completo y revisa proyectos anteriores cuando los necesites.</p>
+            </article>
+        </section>
+
+        <!-- QUICK CALCULATOR SECTION -->
+        <section class="quick-calculator">
+            <h3>Calculadora Rápida</h3>
+            <form id="quickCalc">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="quantity">Cantidad (unidades)</label>
+                        <input 
+                            type="number" 
+                            id="quantity" 
+                            name="quantity" 
+                            min="1" 
+                            placeholder="Ej: 100"
+                            required
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="unitCost">Costo Unitario</label>
+                        <input 
+                            type="number" 
+                            id="unitCost" 
+                            name="unitCost" 
+                            min="0" 
+                            step="0.01"
+                            placeholder="Ej: 50.00"
+                            required
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="fixedCosts">Costos Fijos</label>
+                        <input 
+                            type="number" 
+                            id="fixedCosts" 
+                            name="fixedCosts" 
+                            min="0" 
+                            step="0.01"
+                            placeholder="Ej: 1000.00"
+                            required
+                        />
+                    </div>
+                </div>
+                <button type="submit" class="btn">Calcular Ahora</button>
+            </form>
+
+            <div id="results" aria-live="polite" class="results" hidden>
+                <div class="result-item">
+                    <span>Costo Total:</span>
+                    <strong id="totalCost">0.00</strong>
+                </div>
+                <div class="result-item">
+                    <span>Costo por Unidad:</span>
+                    <strong id="costPerUnit">0.00</strong>
+                </div>
+            </div>
+        </section>
+
+        <!-- ANNOUNCEMENTS / NEWS SECTION -->
+        <section class="announcements-section">
+            <h3>📈 Información Económica</h3>
+            <div class="announcements-grid">
+                <!-- Currency Card -->
+                <div class="announcement-card">
+                    <div class="announcement-header">
+                        <span class="announcement-icon">💵</span>
+                        <div>
+                            <div class="announcement-title">Cotización del Dólar</div>
+                            <div class="announcement-subtitle">Tipo de cambio actual</div>
+                        </div>
+                    </div>
+                    
+                    <div class="announcement-content">
+                        <div class="price-display">
+                            <div class="price-row">
+                                <span class="price-label">USD/EUR</span>
+                                <div>
+                                    <span class="price-value" id="usdEurRate">0.92</span>
+                                    <span class="price-change up">📊</span>
+                                </div>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">USD/MXN</span>
+                                <div>
+                                    <span class="price-value" id="usdMxnRate">20.50</span>
+                                    <span class="price-change">📊</span>
+                                </div>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">USD/ARS</span>
+                                <div>
+                                    <span class="price-value" id="usdArsRate">850.00</span>
+                                    <span class="price-change">📊</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="refresh-time">Actualizando tasas...</div>
+                </div>
+
+                <!-- Market News Card -->
+                <div class="announcement-card">
+                    <div class="announcement-header">
+                        <span class="announcement-icon">📰</span>
+                        <div>
+                            <div class="announcement-title">Noticias Económicas</div>
+                            <div class="announcement-subtitle">Últimas noticias del mercado</div>
+                        </div>
+                    </div>
+                    
+                    <div class="announcement-content">
+                        <div class="news-item">
+                            <div class="news-date">Cargando...</div>
+                            <div class="news-title">Obteniendo últimas noticias económicas</div>
+                            <div class="news-description">Las noticias se están cargando desde fuentes de actualización en tiempo real.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="refresh-time">Cargando noticias...</div>
+                </div>
+
+                <!-- Economic Indicators Card -->
+                <div class="announcement-card">
+                    <div class="announcement-header">
+                        <span class="announcement-icon">📊</span>
+                        <div>
+                            <div class="announcement-title">Indicadores Clave</div>
+                            <div class="announcement-subtitle">Métricas económicas importantes</div>
+                        </div>
+                    </div>
+                    
+                    <div class="announcement-content">
+                        <div class="price-display">
+                            <div class="price-row">
+                                <span class="price-label">Volatilidad Mercado</span>
+                                <span class="price-value">2.5%</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">Rendimiento Global</span>
+                                <span class="price-value">+1.2%</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">Índice Confianza</span>
+                                <span class="price-value">68.5</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">Tendencia General</span>
+                                <span class="price-value">Estable</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="refresh-time">Datos en tiempo real</div>
+                         <div class="refresh-time">agua de uwu</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <small>© <span id="year"></span> Costeos & Ingeniería — Plataforma de Análisis de Costos</small>
+        </div>
+    </footer>
+
+    <script src="js/notifications.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/noticias.js"></script>
+</body>
+</html>
