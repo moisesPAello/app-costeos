@@ -4,7 +4,7 @@ Este folder contiene los **diagramas UML por módulo** del sistema de costeo est
 
 ---
 
-## 🧩 Módulos principales
+## 🧩 Módulos
 
 1. **Autenticación**
    - Registro y login de usuarios (opcional, si se requiere manejo de sesiones)
