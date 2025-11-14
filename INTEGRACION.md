@@ -241,5 +241,5 @@ npm install
 
 ---
 
-**Última actualización:** 14 de noviembre de 2025  
+**Última actualización:** 14 de noviembre de 2025 01:32 am 
 **Estado:** ✅ Integración completa y funcional
