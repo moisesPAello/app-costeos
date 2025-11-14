@@ -16,15 +16,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // User display
     const userDisplay = document.getElementById('userDisplay');
     if (userDisplay) {
-        const settings = JSON.parse(localStorage.getItem('appSettings')) || {};
-        const currentUser = localStorage.getItem('currentUser') || 'Invitado';
+        const currentUser = localStorage.getItem('currentUser');
         const isGuest = localStorage.getItem('isGuest') === 'true';
         
-        if (isGuest) {
-            userDisplay.textContent = `👤 ${currentUser}`;
-            userDisplay.style.opacity = '0.6';
-        } else {
-            userDisplay.textContent = `👤 ${currentUser}`;
+        if (currentUser) {
+            try {
+                const user = JSON.parse(currentUser);
+                const username = user.username || user.name || 'Usuario';
+                
+                if (isGuest) {
+                    userDisplay.textContent = `👤 ${username}`;
+                    userDisplay.style.opacity = '0.6';
+                } else {
+                    userDisplay.textContent = `👤 ${username}`;
+                }
+            } catch (error) {
+                // Fallback para usuarios guardados como string
+                if (isGuest) {
+                    userDisplay.textContent = `👤 ${currentUser}`;
+                    userDisplay.style.opacity = '0.6';
+                } else {
+                    userDisplay.textContent = `👤 ${currentUser}`;
+                }
+            }
         }
     }
 
@@ -59,6 +73,7 @@ async function handleLogout() {
             localStorage.removeItem('currentUser');
             localStorage.removeItem('isGuest');
             localStorage.removeItem('loginTime');
+            localStorage.removeItem('rememberUser');
             
             window.location.href = 'login.html';
         }, 800);

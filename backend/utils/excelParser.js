@@ -43,11 +43,20 @@ function parseExcel(filePath) {
       const normalizedRow = {};
       Object.keys(row).forEach(key => {
         const normalizedKey = key.toLowerCase().trim().replace(/\s+/g, '_');
-        normalizedRow[normalizedKey] = row[key];
+        const value = row[key];
+        
+        // Convertir valores numéricos de string a number
+        if (normalizedKey !== 'material' && value !== null && value !== '') {
+          const numValue = parseFloat(value);
+          normalizedRow[normalizedKey] = isNaN(numValue) ? value : numValue;
+        } else {
+          normalizedRow[normalizedKey] = value;
+        }
       });
       return normalizedRow;
     });
 
+    console.log('📊 Ejemplo de dato normalizado:', normalizedData[0]);
     return normalizedData;
 
   } catch (error) {

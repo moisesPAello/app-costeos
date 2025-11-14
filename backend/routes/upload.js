@@ -51,7 +51,10 @@ const upload = multer({
  */
 router.post('/', upload.single('excel'), async (req, res) => {
   try {
+    console.log('\x1b[36m%s\x1b[0m', '📤 Recibiendo archivo Excel...');
+    
     if (!req.file) {
+      console.log('\x1b[31m%s\x1b[0m', '❌ No se recibió archivo');
       return res.status(400).json({
         success: false,
         error: 'No se proporcionó ningún archivo'
@@ -59,14 +62,22 @@ router.post('/', upload.single('excel'), async (req, res) => {
     }
 
     const filePath = req.file.path;
+    console.log('📂 Archivo guardado en:', filePath);
+    console.log('📊 Nombre:', req.file.originalname);
+    console.log('📏 Tamaño:', req.file.size, 'bytes');
 
     // Parsear Excel
+    console.log('\x1b[36m%s\x1b[0m', '🔍 Parseando Excel...');
     const parsedData = excelParser.parseExcel(filePath);
+    console.log('✅ Registros parseados:', parsedData.length);
+    console.log('📋 Primer registro:', parsedData[0]);
 
     // Validar columnas requeridas
+    console.log('\x1b[36m%s\x1b[0m', '✓ Validando columnas...');
     const validationResult = excelParser.validateColumns(parsedData);
     
     if (!validationResult.valid) {
+      console.log('\x1b[31m%s\x1b[0m', '❌ Validación fallida:', validationResult.errors);
       // Eliminar archivo si no es válido
       fs.unlinkSync(filePath);
       
@@ -78,7 +89,10 @@ router.post('/', upload.single('excel'), async (req, res) => {
     }
 
     // Procesar datos de costeo
+    console.log('\x1b[36m%s\x1b[0m', '🧮 Procesando cálculos de costeo...');
     const processedData = costingController.processExcel(parsedData);
+    console.log('\x1b[32m%s\x1b[0m', '✅ Datos procesados exitosamente');
+    console.log('📊 Primer resultado:', processedData[0]);
 
     res.json({
       success: true,
@@ -92,7 +106,8 @@ router.post('/', upload.single('excel'), async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error al procesar archivo:', error);
+    console.error('\x1b[31m%s\x1b[0m', '❌ Error al procesar archivo:', error);
+    console.error('Stack:', error.stack);
     
     // Limpiar archivo en caso de error
     if (req.file && fs.existsSync(req.file.path)) {

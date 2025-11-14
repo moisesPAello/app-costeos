@@ -131,9 +131,11 @@ function saveCalculation() {
 
     let calculations = JSON.parse(localStorage.getItem('calculations')) || [];
     
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const calculation = {
         id: Date.now(),
-        user: localStorage.getItem('currentUser'),
+        user: currentUser.username,
+        userId: currentUser.id,
         ...window.currentCalc
     };
 

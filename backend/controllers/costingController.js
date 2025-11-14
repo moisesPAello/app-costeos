@@ -36,26 +36,33 @@ class CostingController {
    * @returns {Object} Registro procesado con cálculos
    */
   processRecord(record) {
+    // Convertir valores a números para asegurar cálculos correctos
+    const ps = parseFloat(record.ps);
+    const qs = parseFloat(record.qs);
+    const precioReal = parseFloat(record.precio_real);
+    const cantidadReal = parseFloat(record.cantidad_real);
+    const unidadesProducidas = parseFloat(record.unidades_producidas);
+
     // Calcular costo estándar
     const costoEstandar = formulas.calcularCostoEstandar(
-      record.ps,
-      record.qs,
-      record.unidades_producidas
+      ps,
+      qs,
+      unidadesProducidas
     );
 
     // Calcular costo real
     const costoReal = formulas.calcularCostoReal(
-      record.precio_real,
-      record.cantidad_real,
-      record.unidades_producidas
+      precioReal,
+      cantidadReal,
+      unidadesProducidas
     );
 
     // Calcular variaciones
     const variaciones = formulas.calcularVariaciones(
-      record.ps,
-      record.qs,
-      record.precio_real,
-      record.cantidad_real
+      ps,
+      qs,
+      precioReal,
+      cantidadReal
     );
 
     // Clasificar eficiencia
@@ -64,11 +71,11 @@ class CostingController {
     return {
       // Datos originales
       material: record.material,
-      ps: record.ps,
-      qs: record.qs,
-      precio_real: record.precio_real,
-      cantidad_real: record.cantidad_real,
-      unidades_producidas: record.unidades_producidas,
+      ps: ps,
+      qs: qs,
+      precio_real: precioReal,
+      cantidad_real: cantidadReal,
+      unidades_producidas: unidadesProducidas,
       
       // Cálculos
       costo_estandar: costoEstandar,

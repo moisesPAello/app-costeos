@@ -26,13 +26,54 @@
     </header>
 
     <main class="container">
-        <h2>Análisis de Datos</h2>
+        <h2>Análisis de Costeo Estándar</h2>
+
+        <!-- UPLOAD EXCEL SECTION -->
+        <section class="upload-section">
+            <h3>📁 Cargar Archivo Excel</h3>
+            <p>Sube un archivo Excel con los datos de costeo estándar para procesar</p>
+            
+            <form id="uploadExcelForm" class="upload-form">
+                <div class="file-input-wrapper">
+                    <input 
+                        type="file" 
+                        id="excelFile" 
+                        name="excelFile" 
+                        accept=".xlsx,.xls" 
+                        required
+                    />
+                    <label for="excelFile" class="file-label">
+                        <span class="file-icon">�</span>
+                        <span class="file-text">Seleccionar archivo Excel</span>
+                    </label>
+                </div>
+                
+                <div class="upload-info">
+                    <h4>Formato requerido del Excel:</h4>
+                    <ul>
+                        <li>Columna: <code>material</code> - Nombre del material</li>
+                        <li>Columna: <code>ps</code> - Precio Estándar</li>
+                        <li>Columna: <code>qs</code> - Cantidad Estándar</li>
+                        <li>Columna: <code>precio_real</code> - Precio Real pagado</li>
+                        <li>Columna: <code>cantidad_real</code> - Cantidad Real utilizada</li>
+                        <li>Columna: <code>unidades_producidas</code> - Unidades fabricadas</li>
+                    </ul>
+                </div>
+                
+                <button type="submit" class="btn">Procesar Excel</button>
+            </form>
+        </section>
+
+        <!-- PROCESSED RESULTS -->
+        <section id="processedResults" class="processed-section" hidden>
+            <h3>Datos Procesados</h3>
+            <!-- Los resultados se mostrarán aquí dinámicamente -->
+        </section>
 
         <!-- NO DATA MESSAGE -->
-        <div id="noDataMessage" class="no-data-message">
+        <div id="noDataMessage" class="no-data-message" hidden>
             <p>📊 No hay datos para analizar aún</p>
-            <p>Crea algunos cálculos primero para ver análisis detallados</p>
-            <a href="calcular.html" class="btn">Ir a Calcular</a>
+            <p>Carga un archivo Excel para comenzar el análisis</p>
         </div>
 
         <!-- ANALYSIS DASHBOARD (Hidden until data exists) -->
@@ -231,7 +272,11 @@
         </div>
     </footer>
 
+    <script src="js/notifications.js"></script>
+    <script src="js/api.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/upload.js"></script>
     <script src="js/analizar.js"></script>
+    <script src="js/charts.js"></script>
 </body>
 </html>

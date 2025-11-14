@@ -45,7 +45,7 @@ function initializeUsers() {
     }
 }
 
-function handleLogin(e) {
+async function handleLogin(e) {
     e.preventDefault();
 
     const username = document.getElementById('loginUsername').value.trim();
@@ -58,18 +58,71 @@ function handleLogin(e) {
         return;
     }
 
-    const users = JSON.parse(localStorage.getItem('registeredUsers')) || {};
+    // Intentar login con el backend
+    try {
+        notify.info('Verificando...', 'Autenticando credenciales');
+        
+        // Verificar si el backend está disponible
+        const backendAvailable = await fetch('http://localhost:3000/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        }).then(res => res.json()).catch(() => null);
 
-    // Validar credenciales
-    if (users[username] && users[username] === password) {
-        loginUser(username, false, remember);
-    } else {
-        notify.error('Credenciales Inválidas', 'Usuario o contraseña incorrectos');
-        document.getElementById('loginPassword').value = '';
+        if (backendAvailable && backendAvailable.success) {
+            // Login exitoso con backend
+            const userData = {
+                id: backendAvailable.data.id,
+                username: backendAvailable.data.username,
+                role: backendAvailable.data.role
+            };
+            
+            loginUser(userData, false, remember);
+        } else if (backendAvailable && !backendAvailable.success) {
+            // Backend respondió pero credenciales incorrectas
+            notify.error('Error de Autenticación', backendAvailable.error || 'Credenciales incorrectas');
+            document.getElementById('loginPassword').value = '';
+        } else {
+            // Backend no disponible, usar localStorage (fallback)
+            console.warn('Backend no disponible, usando autenticación local');
+            const users = JSON.parse(localStorage.getItem('registeredUsers')) || {};
+            
+            if (users[username] && users[username] === password) {
+                const userData = {
+                    id: Date.now(),
+                    username: username,
+                    role: 'user'
+                };
+                loginUser(userData, false, remember);
+            } else {
+                notify.error('Error de Autenticación', 'Usuario o contraseña incorrectos');
+                document.getElementById('loginPassword').value = '';
+            }
+        }
+    } catch (error) {
+        console.error('Error en login:', error);
+        
+        // Fallback a localStorage si hay error
+        const users = JSON.parse(localStorage.getItem('registeredUsers')) || {};
+        
+        if (users[username] && users[username] === password) {
+            notify.warning('Modo Sin Conexión', 'Iniciando sesión localmente');
+            const userData = {
+                id: Date.now(),
+                username: username,
+                role: 'user'
+            };
+            loginUser(userData, false, remember);
+        } else {
+            notify.error('Error de Conexión', 'No se pudo conectar con el servidor y las credenciales locales son incorrectas');
+            document.getElementById('loginPassword').value = '';
+        }
     }
 }
 
-function handleRegister(e) {
+async function handleRegister(e) {
     e.preventDefault();
 
     const username = document.getElementById('regUsername').value.trim();
@@ -93,42 +146,107 @@ function handleRegister(e) {
         return;
     }
 
+    // Verificar en localStorage primero
     const users = JSON.parse(localStorage.getItem('registeredUsers')) || {};
 
     if (users[username]) {
-        notify.error('Usuario Existente', 'Este usuario ya está registrado');
+        notify.error('Usuario Existente', 'Este usuario ya está registrado localmente');
         return;
     }
 
-    // Registrar nuevo usuario
-    users[username] = password;
-    localStorage.setItem('registeredUsers', JSON.stringify(users));
+    try {
+        // Intentar registrar en backend primero
+        const backendResponse = await fetch('http://localhost:3000/api/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, email, password })
+        }).then(res => res.json()).catch(() => null);
 
-    // Guardar email
-    const emails = JSON.parse(localStorage.getItem('userEmails')) || {};
-    emails[username] = email;
-    localStorage.setItem('userEmails', JSON.stringify(emails));
+        if (backendResponse && backendResponse.success) {
+            // Registro exitoso en backend, también guardar en localStorage
+            users[username] = password;
+            localStorage.setItem('registeredUsers', JSON.stringify(users));
 
-    notify.success('¡Cuenta Creada!', 'Tu cuenta ha sido creada exitosamente. Iniciando sesión...');
-    
-    setTimeout(() => {
-        loginUser(username, false, true);
-    }, 1200);
+            const emails = JSON.parse(localStorage.getItem('userEmails')) || {};
+            emails[username] = email;
+            localStorage.setItem('userEmails', JSON.stringify(emails));
+
+            notify.success('¡Cuenta Creada!', 'Tu cuenta ha sido creada exitosamente en el servidor. Iniciando sesión...');
+            
+            setTimeout(() => {
+                const userData = {
+                    id: backendResponse.data.id,
+                    username: backendResponse.data.username,
+                    role: backendResponse.data.role
+                };
+                loginUser(userData, false, true);
+            }, 1200);
+        } else if (backendResponse && !backendResponse.success) {
+            // Backend respondió con error
+            notify.error('Error de Registro', backendResponse.error || 'No se pudo crear la cuenta');
+        } else {
+            // Backend no disponible, registrar solo en localStorage
+            console.warn('Backend no disponible, registrando solo localmente');
+            
+            users[username] = password;
+            localStorage.setItem('registeredUsers', JSON.stringify(users));
+
+            const emails = JSON.parse(localStorage.getItem('userEmails')) || {};
+            emails[username] = email;
+            localStorage.setItem('userEmails', JSON.stringify(emails));
+
+            notify.warning('Cuenta Creada Localmente', 'Tu cuenta se sincronizará cuando el servidor esté disponible. Iniciando sesión...');
+            
+            setTimeout(() => {
+                const userData = {
+                    id: Date.now(),
+                    username: username,
+                    role: 'user'
+                };
+                loginUser(userData, false, true);
+            }, 1200);
+        }
+    } catch (error) {
+        console.error('Error en registro:', error);
+        
+        // Fallback a localStorage
+        users[username] = password;
+        localStorage.setItem('registeredUsers', JSON.stringify(users));
+
+        const emails = JSON.parse(localStorage.getItem('userEmails')) || {};
+        emails[username] = email;
+        localStorage.setItem('userEmails', JSON.stringify(emails));
+
+        notify.warning('Cuenta Creada Localmente', 'Registro guardado localmente. Iniciando sesión...');
+        
+        setTimeout(() => {
+            const userData = {
+                id: Date.now(),
+                username: username,
+                role: 'user'
+            };
+            loginUser(userData, false, true);
+        }, 1200);
+    }
 }
 
-function loginUser(username, isGuest = false, remember = false) {
+function loginUser(userData, isGuest = false, remember = false) {
     // Guardar sesión
     localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('currentUser', username);
+    localStorage.setItem('currentUser', JSON.stringify(userData));
     localStorage.setItem('isGuest', isGuest);
     localStorage.setItem('loginTime', new Date().toISOString());
 
     // Recordar usuario
     if (remember) {
-        localStorage.setItem('rememberUser', username);
+        localStorage.setItem('rememberUser', typeof userData === 'string' ? userData : userData.username);
     } else {
         localStorage.removeItem('rememberUser');
     }
+
+    const username = typeof userData === 'string' ? userData : userData.username;
 
     if (isGuest) {
         notify.success('Acceso como Invitado', 'Ten en cuenta que algunas funciones están limitadas');
@@ -142,8 +260,12 @@ function loginUser(username, isGuest = false, remember = false) {
 }
 
 function loginAsGuest() {
-    const guestName = `Invitado_${Date.now()}`;
-    loginUser(guestName, true, false);
+    const guestData = {
+        id: Date.now(),
+        username: `Invitado_${Date.now()}`,
+        role: 'guest'
+    };
+    loginUser(guestData, true, false);
 }
 
 function switchToRegister() {
@@ -207,5 +329,9 @@ function logout() {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('isGuest');
     localStorage.removeItem('loginTime');
-    window.location.href = 'login.html';
+    localStorage.removeItem('rememberUser');
+    notify.info('Sesión Cerrada', 'Has cerrado sesión correctamente');
+    setTimeout(() => {
+        window.location.href = 'login.html';
+    }, 800);
 }

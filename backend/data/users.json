@@ -17,6 +17,13 @@
       "username": "usuario",
       "password": "usuario123",
       "role": "user"
+    },
+    {
+      "id": 4,
+      "username": "Prueba_2",
+      "password": "123456",
+      "email": "Prueba@gmail.com",
+      "role": "user"
     }
   ]
 }
