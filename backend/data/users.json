@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin123",
+      "role": "administrator"
+    },
+    {
+      "id": 2,
+      "username": "contador",
+      "password": "contador123",
+      "role": "accountant"
+    },
+    {
+      "id": 3,
+      "username": "usuario",
+      "password": "usuario123",
+      "role": "user"
+    }
+  ]
+}
