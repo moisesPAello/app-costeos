@@ -190,6 +190,23 @@ html, body {
     border-color: var(--base-700);
 }
 
+/* TEMPLATE DOWNLOAD */
+.template-download {
+    margin-bottom: 24px;
+    padding: 20px;
+    background: var(--surface-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.template-info {
+    margin-top: 8px;
+    font-size: 14px;
+    color: var(--text-dark);
+    opacity: 0.8;
+}
+
 /* FEATURES */
 .features {
     display: grid;

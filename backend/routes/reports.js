@@ -100,4 +100,68 @@ router.post('/charts', (req, res) => {
   }
 });
 
+/**
+ * GET /api/reports/template
+ * Descargar plantilla Excel
+ */
+router.get('/template', (req, res) => {
+  try {
+    const XLSX = require('xlsx');
+
+    // Crear datos de ejemplo para la plantilla
+    const templateData = [
+      {
+        material: 'Materia Prima A',
+        ps: 10.50,
+        qs: 5.0,
+        precio_real: 11.00,
+        cantidad_real: 5.2,
+        unidades_producidas: 100
+      },
+      {
+        material: 'Materia Prima B',
+        ps: 15.75,
+        qs: 3.0,
+        precio_real: 16.20,
+        cantidad_real: 3.1,
+        unidades_producidas: 100
+      }
+    ];
+
+    // Crear workbook y worksheet
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(templateData);
+
+    // Agregar worksheet al workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Plantilla Costeo');
+
+    // Configurar headers
+    ws['!cols'] = [
+      { wch: 20 }, // material
+      { wch: 10 }, // ps
+      { wch: 10 }, // qs
+      { wch: 15 }, // precio_real
+      { wch: 15 }, // cantidad_real
+      { wch: 20 }  // unidades_producidas
+    ];
+
+    // Generar buffer
+    const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
+
+    // Configurar headers de respuesta
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename="plantilla-costeo-estandar.xlsx"');
+
+    // Enviar el archivo
+    res.send(buffer);
+
+  } catch (error) {
+    console.error('Error al generar plantilla:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error al generar la plantilla'
+    });
+  }
+});
+
 module.exports = router;

@@ -21,7 +21,8 @@ const API = {
     reports: {
         generate: `${API_BASE_URL}/api/reports/generate`,
         summary: `${API_BASE_URL}/api/reports/summary`,
-        charts: `${API_BASE_URL}/api/reports/charts`
+        charts: `${API_BASE_URL}/api/reports/charts`,
+        template: `${API_BASE_URL}/api/reports/template`
     }
 };
 
@@ -167,6 +168,37 @@ async function getChartsData(data) {
 }
 
 /**
+ * Descargar plantilla Excel
+ * @returns {Promise<void>}
+ */
+async function downloadTemplate() {
+    try {
+        const response = await fetch(API.reports.template, {
+            method: 'GET'
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al descargar la plantilla');
+        }
+
+        // Crear blob y descargar
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'plantilla-costeo-estandar.xlsx';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+        console.error('Error en downloadTemplate:', error);
+        throw error;
+    }
+}
+
+/**
  * Verificar conexión con el backend
  * @returns {Promise<boolean>} True si está conectado
  */
@@ -190,5 +222,6 @@ window.API_CLIENT = {
     generateReport,
     getSummary,
     getChartsData,
+    downloadTemplate,
     checkBackendConnection
 };

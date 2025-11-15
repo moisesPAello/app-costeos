@@ -10,6 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
 function setupEventListeners() {
     document.getElementById('updateProjection').addEventListener('click', updateProjections);
     document.getElementById('exportAnalysis').addEventListener('click', exportAnalysisReport);
+    document.getElementById('downloadTemplateBtn').addEventListener('click', downloadTemplate);
+}
+
+async function downloadTemplate() {
+    try {
+        await API_CLIENT.downloadTemplate();
+        notify.success('Descarga Completa', 'Plantilla descargada exitosamente');
+    } catch (error) {
+        console.error('Error al descargar plantilla:', error);
+        notify.error('Error', 'No se pudo descargar la plantilla');
+    }
 }
 
 function loadData() {
