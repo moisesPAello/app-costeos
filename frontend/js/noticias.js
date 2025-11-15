@@ -14,11 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadEconomicNews() {
     try {
-        // Intentar cargar desde API
         const newsContainer = document.querySelector('.announcement-card:nth-child(2) .announcement-content');
         if (!newsContainer) return;
 
-        // Usar datos de demostración si no hay conexión o API no está disponible
+        // Usar datos mock
         const news = await fetchNewsWithFallback();
         
         if (news && news.length > 0) {
@@ -26,42 +25,32 @@ async function loadEconomicNews() {
             updateNewsTimestamp();
         }
     } catch (error) {
-        console.log('Usando noticias predeterminadas', error);
-        // Las noticias predeterminadas del HTML permanecen
+        console.log('Error cargando noticias:', error);
     }
 }
 
 async function fetchNewsWithFallback() {
-    try {
-        // Intentar obtener noticias económicas en español
-        const response = await fetch(
-            `${NEWS_API_URL}?q=economía+costa+Rica&language=es&sortBy=publishedAt&pageSize=3`,
-            {
-                headers: {
-                    'X-API-Key': 'c3f7d8e9a0b1c2d3e4f5g6h7i8j9k0l1' // API key de demostración
-                }
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error('API no disponible');
+    // Usar datos mock ya que la API requiere key válida
+    return [
+        {
+            title: "Mercado bursátil muestra recuperación en América Latina",
+            description: "Los índices principales registran ganancias tras anuncios económicos positivos en la región.",
+            date: "Hace 2 horas",
+            source: "Reuters"
+        },
+        {
+            title: "Inflación se mantiene estable en niveles moderados",
+            description: "Los datos del último mes muestran una tendencia a la baja en la mayoría de los países.",
+            date: "Hace 4 horas",
+            source: "Bloomberg"
+        },
+        {
+            title: "Nuevo acuerdo comercial impulsa exportaciones",
+            description: "El tratado firmado recientemente abre nuevas oportunidades para el comercio internacional.",
+            date: "Hace 6 horas",
+            source: "Financial Times"
         }
-
-        const data = await response.json();
-        
-        if (data.articles && data.articles.length > 0) {
-            return data.articles.map(article => ({
-                title: article.title,
-                description: article.description,
-                date: formatDate(article.publishedAt),
-                source: article.source.name
-            }));
-        }
-    } catch (error) {
-        console.log('Error fetching news, using demo data:', error);
-    }
-    
-    return null;
+    ];
 }
 
 function renderNews(container, newsArray) {
@@ -84,6 +73,17 @@ function updateNewsTimestamp() {
     if (indicators.length >= 2) {
         const newsCard = indicators[1];
         const timestamp = newsCard.querySelector('.refresh-time');
+        if (timestamp) {
+            timestamp.textContent = 'Actualizado hace menos de 1 minuto';
+        }
+    }
+}
+
+function updateRatesTimestamp() {
+    const indicators = document.querySelectorAll('.announcement-card');
+    if (indicators.length >= 1) {
+        const ratesCard = indicators[0];
+        const timestamp = ratesCard.querySelector('.refresh-time');
         if (timestamp) {
             timestamp.textContent = 'Actualizado hace menos de 1 minuto';
         }
@@ -116,8 +116,8 @@ function formatDate(dateString) {
 
 async function loadExchangeRates() {
     try {
-        // API de tasas de cambio gratuita
-        const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+        // API gratuita de tasas de cambio
+        const response = await fetch('https://api.exchangerate.host/latest?base=USD');
         
         if (!response.ok) {
             throw new Error('No se pudieron cargar las tasas');
@@ -127,6 +127,7 @@ async function loadExchangeRates() {
         
         // Actualizar tasas en el DOM
         updateExchangeRates(data.rates);
+        updateRatesTimestamp();
     } catch (error) {
         console.log('Usando tasas predeterminadas:', error);
         // Las tasas predeterminadas del HTML permanecen
