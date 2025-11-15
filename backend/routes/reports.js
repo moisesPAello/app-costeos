@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const variationController = require('../controllers/variationController');
+const XLSX = require('xlsx');
 
 /**
  * POST /api/reports/generate
@@ -106,25 +107,15 @@ router.post('/charts', (req, res) => {
  */
 router.get('/template', (req, res) => {
   try {
-    const XLSX = require('xlsx');
-
-    // Crear datos de ejemplo para la plantilla
+    // Crear plantilla vacía con solo los headers
     const templateData = [
       {
-        material: 'Materia Prima A',
-        ps: 10.50,
-        qs: 5.0,
-        precio_real: 11.00,
-        cantidad_real: 5.2,
-        unidades_producidas: 100
-      },
-      {
-        material: 'Materia Prima B',
-        ps: 15.75,
-        qs: 3.0,
-        precio_real: 16.20,
-        cantidad_real: 3.1,
-        unidades_producidas: 100
+        material: '',
+        ps: '',
+        qs: '',
+        precio_real: '',
+        cantidad_real: '',
+        unidades_producidas: ''
       }
     ];
 
