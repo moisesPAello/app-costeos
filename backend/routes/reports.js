@@ -107,21 +107,16 @@ router.post('/charts', (req, res) => {
  */
 router.get('/template', (req, res) => {
   try {
-    // Crear plantilla vacía con solo los headers
-    const templateData = [
-      {
-        material: '',
-        ps: '',
-        qs: '',
-        precio_real: '',
-        cantidad_real: '',
-        unidades_producidas: ''
-      }
-    ];
+    // Crear plantilla completamente vacía con solo headers
+    const templateData = [];
 
     // Crear workbook y worksheet
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(templateData);
+
+    // Definir headers manualmente
+    const headers = ['material', 'ps', 'qs', 'precio_real', 'cantidad_real', 'unidades_producidas'];
+    XLSX.utils.sheet_add_aoa(ws, [headers], { origin: 'A1' });
 
     // Agregar worksheet al workbook
     XLSX.utils.book_append_sheet(wb, ws, 'Plantilla Costeo');
