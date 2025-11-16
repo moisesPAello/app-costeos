@@ -31,7 +31,13 @@
       "password": "123456",
       "email": "ian@gmail.com",
       "role": "user"
+    },
+    {
+      "id": 6,
+      "username": "Moises",
+      "password": "jXGL-]fq87sP_sR",
+      "email": "moisesperezaello@gmail.com",
+      "role": "user"
     }
-
   ]
 }
