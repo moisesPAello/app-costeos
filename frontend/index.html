@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Costeos & Ingeniería — Inicio</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <h1>Costeos & Ingeniería</h1>
+            <nav class="main-nav">
+                <a href="index.html" class="active">Inicio</a>
+                <a href="calcular.html">Calcular</a>
+                <a href="analizar.html">Analizar</a>
+                <a href="historial.html">Historial</a>
+                <a href="configuracion.html">Configuración</a>
+            </nav>
+            <div class="user-menu">
+                <span id="userDisplay"></span>
+                <button id="logoutBtn" class="btn-logout">Cerrar Sesión</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <h2>Bienvenido</h2>
+            <p>Plataforma profesional para calcular y analizar los costos reales y presupuestados de producción. Gestiona tus proyectos con precisión.</p>
+            <div class="cta">
+                <a href="calcular.html" class="btn">Ir a Calculadora</a>
+                <a href="analizar.html" class="btn secondary">Ir a Análisis</a>
+            </div>
+        </section>
+
+        <!-- FEATURES SECTION -->
+        <section class="features">
+            <article class="feature-card">
+                <h3>💰 Calculadora de Costos</h3>
+                <p>Calcula costos totales y unitarios de forma rápida. Incluye costos fijos, variables y márgenes de ganancia configurables.</p>
+            </article>
+            <article class="feature-card">
+                <h3>📊 Análisis Detallado</h3>
+                <p>Compara costos reales vs presupuestados. Genera reportes visuales y exporta datos para tomar decisiones informadas.</p>
+            </article>
+            <article class="feature-card">
+                <h3>📁 Historial Completo</h3>
+                <p>Guarda todos tus cálculos. Accede al historial completo y revisa proyectos anteriores cuando los necesites.</p>
+            </article>
+        </section>
+
+        <!-- QUICK CALCULATOR SECTION -->
+        <section class="quick-calculator">
+            <h3>Calculadora Rápida</h3>
+            <form id="quickCalc">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="quantity">Cantidad (unidades)</label>
+                        <input 
+                            type="number" 
+                            id="quantity" 
+                            name="quantity" 
+                            min="1" 
+                            placeholder="Ej: 100"
+                            required
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="unitCost">Costo Unitario</label>
+                        <input 
+                            type="number" 
+                            id="unitCost" 
+                            name="unitCost" 
+                            min="0" 
+                            step="0.01"
+                            placeholder="Ej: 50.00"
+                            required
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="fixedCosts">Costos Fijos</label>
+                        <input 
+                            type="number" 
+                            id="fixedCosts" 
+                            name="fixedCosts" 
+                            min="0" 
+                            step="0.01"
+                            placeholder="Ej: 1000.00"
+                            required
+                        />
+                    </div>
+                </div>
+                <button type="submit" class="btn">Calcular Ahora</button>
+            </form>
+
+            <div id="results" aria-live="polite" class="results" hidden>
+                <div class="result-item">
+                    <span>Costo Total:</span>
+                    <strong id="totalCost">0.00</strong>
+                </div>
+                <div class="result-item">
+                    <span>Costo por Unidad:</span>
+                    <strong id="costPerUnit">0.00</strong>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <small>© <span id="year"></span> Costeos & Ingeniería — Plataforma de Análisis de Costos</small>
+        </div>
+    </footer>
+
+    <script src="js/notifications.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

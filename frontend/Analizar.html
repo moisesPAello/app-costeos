@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Costeos & Ingeniería — Análisis</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <h1>Costeos & Ingeniería</h1>
+            <nav class="main-nav">
+                <a href="index.html">Inicio</a>
+                <a href="calcular.html">Calcular</a>
+                <a href="analizar.html" class="active">Analizar</a>
+                <a href="historial.html">Historial</a>
+                <a href="configuracion.html">Configuración</a>
+            </nav>
+            <div class="user-menu">
+                <span id="userDisplay"></span>
+                <button id="logoutBtn" class="btn-logout">Cerrar Sesión</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2>Análisis de Costeo Estándar</h2>
+
+        <!-- UPLOAD EXCEL SECTION -->
+        <section class="upload-section">
+            <h3>📁 Cargar Archivo Excel</h3>
+            <p>Sube un archivo Excel con los datos de costeo estándar para procesar</p>
+            
+            <div class="template-download">
+                <button id="downloadTemplateBtn" class="btn btn-secondary">📄 Descargar Plantilla Excel</button>
+                <p class="template-info">Descarga la plantilla con el formato correcto para subir tus datos</p>
+            </div>
+            
+            <form id="uploadExcelForm" class="upload-form">
+                <div class="file-input-wrapper">
+                    <input 
+                        type="file" 
+                        id="excelFile" 
+                        name="excelFile" 
+                        accept=".xlsx,.xls" 
+                        required
+                    />
+                    <label for="excelFile" class="file-label">
+                        <span class="file-icon">�</span>
+                        <span class="file-text">Seleccionar archivo Excel</span>
+                    </label>
+                </div>
+                
+                <div class="upload-info">
+                    <h4>Formato requerido del Excel:</h4>
+                    <ul>
+                        <li>Columna: <code>material</code> - Nombre del material</li>
+                        <li>Columna: <code>ps</code> - Precio Estándar</li>
+                        <li>Columna: <code>qs</code> - Cantidad Estándar</li>
+                        <li>Columna: <code>precio_real</code> - Precio Real pagado</li>
+                        <li>Columna: <code>cantidad_real</code> - Cantidad Real utilizada</li>
+                        <li>Columna: <code>unidades_producidas</code> - Unidades fabricadas</li>
+                    </ul>
+                </div>
+                
+                <button type="submit" class="btn">Procesar Excel</button>
+            </form>
+        </section>
+
+        <!-- PROCESSED RESULTS -->
+        <section id="processedResults" class="processed-section" hidden>
+            <h3>Datos Procesados</h3>
+            <!-- Los resultados se mostrarán aquí dinámicamente -->
+        </section>
+
+        <!-- NO DATA MESSAGE -->
+        <div id="noDataMessage" class="no-data-message" hidden>
+            <p>📊 No hay datos para analizar aún</p>
+            <p>Carga un archivo Excel para comenzar el análisis</p>
+        </div>
+
+        <!-- ANALYSIS DASHBOARD (Hidden until data exists) -->
+        <div id="analysisDashboard" hidden>
+            <!-- KPI CARDS -->
+            <section class="kpi-section">
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Cálculos</div>
+                    <div class="kpi-value" id="kpiTotal">0</div>
+                    <div class="kpi-change" id="kpiTotalChange">-</div>
+                </div>
+                <div class="kpi-card highlight">
+                    <div class="kpi-label">Ganancia Total</div>
+                    <div class="kpi-value" id="kpiTotalProfit">0.00</div>
+                    <div class="kpi-change positive" id="kpiProfitChange">↑ 0%</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Costo Promedio</div>
+                    <div class="kpi-value" id="kpiAvgCost">0.00</div>
+                    <div class="kpi-change" id="kpiCostChange">-</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Margen Promedio</div>
+                    <div class="kpi-value" id="kpiAvgMargin">0.00%</div>
+                    <div class="kpi-change" id="kpiMarginChange">-</div>
+                </div>
+            </section>
+
+            <!-- CHARTS GRID -->
+            <section class="charts-section">
+                <!-- Cost Distribution Chart -->
+                <div class="chart-card">
+                    <h3>Distribución de Costos</h3>
+                    <canvas id="costChart"></canvas>
+                </div>
+
+                <!-- Profit Trend Chart -->
+                <div class="chart-card">
+                    <h3>Tendencia de Ganancias</h3>
+                    <canvas id="profitChart"></canvas>
+                </div>
+
+                <!-- Project Performance -->
+                <div class="chart-card">
+                    <h3>Desempeño por Proyecto</h3>
+                    <canvas id="projectChart"></canvas>
+                </div>
+
+                <!-- Currency Distribution -->
+                <div class="chart-card">
+                    <h3>Distribución por Moneda</h3>
+                    <canvas id="currencyChart"></canvas>
+                </div>
+            </section>
+
+            <!-- PROJECTIONS SECTION -->
+            <section class="projections-section">
+                <h3>📈 Proyecciones Futuras</h3>
+                <div class="projection-controls">
+                    <div class="control-group">
+                        <label for="projMonths">Meses a proyectar:</label>
+                        <select id="projMonths">
+                            <option value="3">3 meses</option>
+                            <option value="6" selected>6 meses</option>
+                            <option value="12">12 meses</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="projGrowth">Crecimiento estimado (%):</label>
+                        <input type="number" id="projGrowth" value="10" min="0" max="100" step="0.1" />
+                    </div>
+                    <button id="updateProjection" class="btn">Actualizar Proyección</button>
+                </div>
+
+                <div class="projection-charts">
+                    <div class="chart-card">
+                        <h3>Proyección de Ingresos</h3>
+                        <canvas id="projectionChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Proyección de Ganancias</h3>
+                        <canvas id="projectionProfitChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DETAILED STATISTICS -->
+            <section class="detailed-stats-section">
+                <h3>📋 Estadísticas Detalladas</h3>
+                
+                <div class="stats-grid">
+                    <!-- Products Stats -->
+                    <div class="stats-card">
+                        <h4>Productos</h4>
+                        <div class="stat-row">
+                            <span>Total de proyectos</span>
+                            <strong id="statProjects">0</strong>
+                        </div>
+                        <div class="stat-row">
+                            <span>Unidades totales producidas</span>
+                            <strong id="statTotalUnits">0</strong>
+                        </div>
+                        <div class="stat-row">
+                            <span>Promedio unidades/proyecto</span>
+                            <strong id="statAvgUnits">0</strong>
+                        </div>
+                        <div class="stat-row">
+                            <span>Proyecto más grande</span>
+                            <strong id="statLargestProject">-</strong>
+                        </div>
+                    </div>
+
+                    <!-- Costs Stats -->
+                    <div class="stats-card">
+                        <h4>Costos</h4>
+                        <div class="stat-row">
+                            <span>Costo total invertido</span>
+                            <strong id="statTotalCost">0.00</strong>
+                        </div>
+                        <div class="stat-row">
+                            <span>Costos fijos totales</span>
+                            <strong id="statFixedCosts">0.00</strong>
+                        </div>
+                        <div class="stat-row">
+                            <span>Costos variables totales</span>
+                            <strong id="statVariableCosts">0.00</strong>
+                        </div>
+                        <div class="stat-row">
+                            <span>Costo mínimo/unidad</span>
+                            <strong id="statMinUnitCost">0.00</strong>
+                        </div>
+                        <div class="stat-row">
+                            <span>Costo máximo/unidad</span>
+                            <strong id="statMaxUnitCost">0.00</strong>
+                        </div>
+                    </div>
+
+                    <!-- Revenue Stats -->
+                    <div class="stats-card">
+                        <h4>Ingresos y Ganancias</h4>
+                        <div class="stat-row">
+                            <span>Ingresos totales</span>
+                            <strong id="statTotalRevenue">0.00</strong>
+                        </div>
+                        <div class="stat-row positive">
+                            <span>Ganancia total</span>
+                            <strong id="statTotalGain">0.00</strong>
+                        </div>
+                        <div class="stat-row">
+                            <span>Ganancia promedio/proyecto</span>
+                            <strong id="statAvgGain">0.00</strong>
+                        </div>
+                        <div class="stat-row">
+                            <span>Margen de ganancia promedio</span>
+                            <strong id="statAvgMargin">0.00%</strong>
+                        </div>
+                        <div class="stat-row">
+                            <span>ROI promedio</span>
+                            <strong id="statROI">0.00%</strong>
+                        </div>
+                    </div>
+
+                    <!-- Efficiency Stats -->
+                    <div class="stats-card">
+                        <h4>Eficiencia</h4>
+                        <div class="stat-row">
+                            <span>Proyecto más rentable</span>
+                            <strong id="statMostProfitable">-</strong>
+                        </div>
+                        <div class="stat-row">
+                            <span>Margen más alto</span>
+                            <strong id="statHighestMargin">0.00%</strong>
+                        </div>
+                        <div class="stat-row">
+                            <span>Margen más bajo</span>
+                            <strong id="statLowestMargin">0.00%</strong>
+                        </div>
+                        <div class="stat-row">
+                            <span>Moneda más usada</span>
+                            <strong id="statTopCurrency">-</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EXPORT SECTION -->
+            <section class="export-section">
+                <button id="exportAnalysis" class="btn">📥 Exportar Análisis Completo</button>
+            </section>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <small>© <span id="year"></span> Costeos & Ingeniería</small>
+        </div>
+    </footer>
+
+    <script src="js/notifications.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/upload.js"></script>
+    <script src="js/analizar.js"></script>
+    <script src="js/charts.js"></script>
+</body>
+</html>

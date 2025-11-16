@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="es">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>Costeos & Ingeniería — Historial</title>
+	<link rel="stylesheet" href="css/styles.css" />
+	<!-- Chart.js para comparaciones -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+	<header class="site-header">
+		<div class="container">
+			<h1>Costeos & Ingeniería</h1>
+			<nav class="main-nav">
+				<a href="index.html">Inicio</a>
+				<a href="calcular.html">Calcular</a>
+				<a href="analizar.html">Analizar</a>
+				<a href="historial.html" class="active">Historial</a>
+				<a href="configuracion.html">Configuración</a>
+			</nav>
+			<div class="user-menu">
+				<span id="userDisplay"></span>
+				<button id="logoutBtn" class="btn-logout">Cerrar Sesión</button>
+			</div>
+		</div>
+	</header>
+
+	<main class="container">
+		<h2>Historial de Cálculos</h2>
+
+		<!-- filtros (existing UI) -->
+		<section class="filters-section">
+			<div class="filters-container">
+				<!-- Search -->
+				<div class="filter-group">
+					<input 
+						type="text" 
+						id="searchInput" 
+						class="search-input" 
+						placeholder="🔍 Buscar por nombre de proyecto..."
+					/>
+				</div>
+
+				<!-- Date Range Filter -->
+				<div class="filter-group">
+					<label for="dateFrom">Desde:</label>
+					<input type="date" id="dateFrom" class="filter-input" />
+				</div>
+
+				<div class="filter-group">
+					<label for="dateTo">Hasta:</label>
+					<input type="date" id="dateTo" class="filter-input" />
+				</div>
+
+				<!-- Currency Filter -->
+				<div class="filter-group">
+					<label for="currencyFilter">Moneda:</label>
+					<select id="currencyFilter" class="filter-input">
+						<option value="">Todas</option>
+						<option value="EUR">EUR (€)</option>
+						<option value="USD">USD ($)</option>
+						<option value="MXN">MXN ($)</option>
+						<option value="ARS">ARS ($)</option>
+						<option value="COP">COP ($)</option>
+						<option value="GBP">GBP (£)</option>
+						<option value="JPY">JPY (¥)</option>
+					</select>
+				</div>
+
+				<!-- Sort Filter -->
+				<div class="filter-group">
+					<label for="sortBy">Ordenar por:</label>
+					<select id="sortBy" class="filter-input">
+						<option value="recent">Más recientes</option>
+						<option value="older">Más antiguos</option>
+						<option value="name-asc">Nombre (A-Z)</option>
+						<option value="name-desc">Nombre (Z-A)</option>
+						<option value="amount-high">Mayor monto</option>
+						<option value="amount-low">Menor monto</option>
+					</select>
+				</div>
+
+				<!-- Action Buttons -->
+				<div class="filter-group filter-actions">
+					<button id="resetFilters" class="btn secondary">Limpiar Filtros</button>
+					<button id="exportAll" class="btn">Exportar Todo</button>
+				</div>
+			</div>
+
+			<div class="bulk-actions">
+				<!-- Tag input + color selector -->
+				<input type="text" id="tagInput" placeholder="Etiqueta (ej: clienteA, urgente)" />
+				<select id="tagColorSelect" class="tag-color-select" title="Color etiqueta">
+					<option value="">Color (opcional)</option>
+					<option value="green">🟢 Verde</option>
+					<option value="yellow">🟡 Amarillo</option>
+					<option value="red">🔴 Rojo</option>
+				</select>
+
+				<button id="addTagBtn" class="btn" disabled>Añadir Tag</button>
+				<button id="removeTagBtn" class="btn secondary" disabled>Quitar Tag</button>
+
+				<!-- Status buttons (mantener sutiles) -->
+				<div class="status-actions" style="display:flex;gap:8px;align-items:center;">
+					<button id="setStatusGreen" class="btn" title="Marcar como OK (verde)" disabled>🟢 Verde</button>
+					<button id="setStatusYellow" class="btn" title="Marcar como Revisión (amarillo)" disabled>🟡 Amarillo</button>
+					<button id="setStatusRed" class="btn btn-danger" title="Marcar como Urgente (rojo)" disabled>🔴 Rojo</button>
+				</div>
+
+				<button id="highlightBtn" class="btn" disabled>Resaltar Seleccionados</button>
+				<!-- Export movido al fondo -->
+				<button id="compareSelectedBtn" class="btn" disabled>Comparar Seleccionados</button>
+			</div>
+
+			<!-- resumen / estadisticas (existing UI) -->
+			<div class="stats-summary">
+				<div class="stat-card">
+					<span class="stat-label">Total de Cálculos</span>
+					<strong class="stat-value" id="totalCalcs">0</strong>
+				</div>
+				<div class="stat-card">
+					<span class="stat-label">Monto Total</span>
+					<strong class="stat-value" id="totalAmount">0.00</strong>
+				</div>
+				<div class="stat-card">
+					<span class="stat-label">Promedio</span>
+					<strong class="stat-value" id="averageAmount">0.00</strong>
+				</div>
+				<div class="stat-card">
+					<span class="stat-label">Rango de Fechas</span>
+					<strong class="stat-value" id="dateRange">-</strong>
+				</div>
+			</div>
+		</section>
+
+		<section class="history-section">
+			<div id="noRecords" class="no-records" hidden>
+				<p>📭 No hay cálculos guardados aún</p>
+				<a href="calcular.html" class="btn">Ir a Calcular</a>
+			</div>
+
+			<div id="recordsContainer" class="records-container" hidden>
+				<div class="table-responsive">
+					<table class="history-table">
+						<thead>
+							<tr>
+								<th style="width:40px;"><input type="checkbox" id="selectAllCheckbox" title="Seleccionar todo" /></th>
+								<th>Proyecto</th>
+								<th>Fecha</th>
+								<th>Moneda</th>
+								<th>Cantidad</th>
+								<th>Costo Total</th>
+								<th>Costo/Unidad</th>
+								<th>Ganancia</th>
+								<th>Tags</th>
+								<th>Acciones</th>
+							</tr>
+						</thead>
+						<tbody id="historyTableBody">
+							<!-- Rows generados por JS -->
+						</tbody>
+					</table>
+				</div>
+
+				<!-- paginación si aplica -->
+				<div class="pagination">
+					<button id="prevPage" class="btn secondary">← Anterior</button>
+					<span id="pageInfo" class="page-info">Página 1</span>
+					<button id="nextPage" class="btn secondary">Siguiente →</button>
+				</div>
+
+				<!-- NUEVO: acciones al pie de la tabla para más estabilidad visual -->
+				<div class="table-bottom-actions" style="display:flex;gap:10px;align-items:center;margin-top:12px;">
+					<button id="clearFiltersBtn" class="btn secondary">Limpiar Filtros</button>
+					<button id="exportSelectedBottom" class="btn secondary" disabled>Exportar Seleccionados</button>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<!-- Modal de comparación -->
+	<div id="compareModal" class="modal" hidden>
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3>Comparación Seleccionada</h3>
+				<button id="closeCompare" class="modal-close">&times;</button>
+			</div>
+			<div class="modal-body">
+				<canvas id="compareChart" style="max-height:420px;"></canvas>
+				<div id="compareTableContainer" style="margin-top:16px;"></div>
+			</div>
+			<div class="modal-footer">
+				<button id="closeCompareBtn" class="btn secondary">Cerrar</button>
+			</div>
+		</div>
+	</div>
+
+	<footer class="site-footer">
+		<div class="container">
+			<small>© <span id="year"></span> Costeos & Ingeniería</small>
+		</div>
+	</footer>
+
+	<script src="js/notifications.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/historial.js"></script>
+</body>
+</html>

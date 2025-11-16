@@ -1,0 +1,4 @@
+# Carpeta para archivos Excel temporales
+# Los archivos subidos se almacenan aquí temporalmente durante el procesamiento
+
+# Este archivo asegura que la carpeta exista en Git

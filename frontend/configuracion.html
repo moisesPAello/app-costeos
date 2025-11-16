@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Costeos & Ingeniería — Configuración</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <h1>Costeos & Ingeniería</h1>
+            <nav class="main-nav">
+                <a href="index.html">Inicio</a>
+                <a href="calcular.html">Calcular</a>
+                <a href="analizar.html">Analizar</a>
+                <a href="historial.html">Historial</a>
+                <a href="configuracion.html" class="active">Configuración</a>
+            </nav>
+            <div class="user-menu">
+                <span id="userDisplay"></span>
+                <button id="logoutBtn" class="btn-logout">Cerrar Sesión</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2>Configuración</h2>
+
+        <!-- TABS NAVIGATION -->
+        <div class="config-tabs">
+            <button class="config-tab active" data-tab="account">👤 Cuenta</button>
+            <button class="config-tab" data-tab="preferences">⚙️ Preferencias</button>
+            <button class="config-tab" data-tab="data">💾 Datos</button>
+            <button class="config-tab" data-tab="about">ℹ️ Acerca de</button>
+        </div>
+
+        <!-- ACCOUNT TAB -->
+        <section id="account" class="config-section active">
+            <div class="settings-grid">
+                <!-- Username -->
+                <div class="setting-card">
+                    <div class="setting-header">
+                        <h3>👤 Nombre de Usuario</h3>
+                        <p>Tu nombre de usuario en la plataforma</p>
+                    </div>
+                    <div class="setting-body">
+                        <div class="form-group">
+                            <input type="text" id="username" class="form-input" placeholder="Ingresa tu nombre" />
+                            <button class="btn btn-sm" id="saveUsername">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="setting-card">
+                    <div class="setting-header">
+                        <h3>📧 Correo Electrónico</h3>
+                        <p>Dirección de correo asociada a tu cuenta</p>
+                    </div>
+                    <div class="setting-body">
+                        <div class="form-group">
+                            <input type="email" id="email" class="form-input" placeholder="tu@email.com" />
+                            <button class="btn btn-sm" id="saveEmail">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="setting-card">
+                    <div class="setting-header">
+                        <h3>🔐 Contraseña</h3>
+                        <p>Cambia tu contraseña regularmente</p>
+                    </div>
+                    <div class="setting-body">
+                        <div class="form-group">
+                            <input type="password" id="currentPassword" class="form-input" placeholder="Contraseña actual" />
+                            <input type="password" id="newPassword" class="form-input" placeholder="Nueva contraseña" />
+                            <input type="password" id="confirmPassword" class="form-input" placeholder="Confirmar contraseña" />
+                            <button class="btn btn-sm" id="changePassword">Cambiar Contraseña</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PREFERENCES TAB -->
+        <section id="preferences" class="config-section">
+            <div class="settings-grid">
+                <!-- Default Currency -->
+                <div class="setting-card">
+                    <div class="setting-header">
+                        <h3>💱 Moneda Predeterminada</h3>
+                        <p>Moneda por defecto en nuevos cálculos</p>
+                    </div>
+                    <div class="setting-body">
+                        <select id="defaultCurrency" class="form-input">
+                            <option value="EUR">EUR (€)</option>
+                            <option value="USD">USD ($)</option>
+                            <option value="MXN">MXN ($)</option>
+                            <option value="ARS">ARS ($)</option>
+                            <option value="COP">COP ($)</option>
+                            <option value="GBP">GBP (£)</option>
+                            <option value="JPY">JPY (¥)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Default Margin -->
+                <div class="setting-card">
+                    <div class="setting-header">
+                        <h3>📊 Margen de Ganancia</h3>
+                        <p>Margen sugerido por defecto (%)</p>
+                    </div>
+                    <div class="setting-body">
+                        <input type="number" id="defaultMargin" class="form-input" min="0" max="100" step="0.1" value="20" />
+                    </div>
+                </div>
+
+                <!-- Language -->
+                <div class="setting-card">
+                    <div class="setting-header">
+                        <h3>🌐 Idioma</h3>
+                        <p>Selecciona el idioma de la interfaz</p>
+                    </div>
+                    <div class="setting-body">
+                        <select id="language" class="form-input">
+                            <option value="es" selected>Español</option>
+                            <option value="en">English</option>
+                            <option value="pt">Português</option>
+                            <option value="fr">Français</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Notifications -->
+                <div class="setting-card full-width">
+                    <div class="setting-header">
+                        <h3>🔔 Notificaciones</h3>
+                        <p>Recibe alertas sobre cálculos importantes</p>
+                    </div>
+                    <div class="setting-body">
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="notifEmail" checked />
+                                <span>Notificaciones por correo</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="notifBrowser" checked />
+                                <span>Notificaciones del navegador</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="notifDaily" />
+                                <span>Resumen diario</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Save Section -->
+            <div class="preferences-actions">
+                <button class="btn secondary" id="resetPreferences">Restablecer</button>
+                <button class="btn" id="savePreferences">✓ Guardar Cambios</button>
+            </div>
+        </section>
+
+        <!-- DATA TAB -->
+        <section id="data" class="config-section">
+            <div class="settings-grid">
+                <!-- Export -->
+                <div class="setting-card">
+                    <div class="setting-header">
+                        <h3>📥 Exportar Datos</h3>
+                        <p>Descarga todos tus cálculos en JSON</p>
+                    </div>
+                    <div class="setting-body">
+                        <button class="btn btn-secondary" id="exportData">📥 Exportar</button>
+                    </div>
+                </div>
+
+                <!-- Import -->
+                <div class="setting-card">
+                    <div class="setting-header">
+                        <h3>📤 Importar Datos</h3>
+                        <p>Carga cálculos desde un archivo JSON</p>
+                    </div>
+                    <div class="setting-body">
+                        <div class="form-group">
+                            <input type="file" id="importFile" class="form-input" accept=".json" />
+                            <button class="btn btn-secondary" id="importData">📤 Importar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clear Cache -->
+                <div class="setting-card warning">
+                    <div class="setting-header">
+                        <h3>🗑️ Limpiar Caché</h3>
+                        <p>Elimina datos temporales y cookies</p>
+                    </div>
+                    <div class="setting-body">
+                        <button class="btn btn-danger" id="clearCache">Limpiar Caché</button>
+                    </div>
+                </div>
+
+                <!-- Delete All -->
+                <div class="setting-card danger full-width">
+                    <div class="setting-header">
+                        <h3>🔥 Eliminar Todos los Datos</h3>
+                        <p>⚠️ Esta acción no se puede deshacer</p>
+                    </div>
+                    <div class="setting-body">
+                        <button class="btn btn-danger" id="deleteAllData">Eliminar Todo</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT TAB -->
+        <section id="about" class="config-section">
+            <div class="about-card">
+                <h3>Costeos & Ingeniería</h3>
+                <p><strong>Versión:</strong> 1.0.0</p>
+                <p><strong>Última actualización:</strong> Enero 2025</p>
+                
+                <h4>Descripción</h4>
+                <p>Plataforma profesional para el cálculo y análisis de costos de producción. Diseñada para ayudarte a gestionar tus proyectos con precisión.</p>
+                
+                <h4>Características Principales</h4>
+                <ul class="features-list">
+                    <li>✓ Calculadora avanzada de costos</li>
+                    <li>✓ Análisis detallado con gráficos</li>
+                    <li>✓ Proyecciones futuras</li>
+                    <li>✓ Historial completo</li>
+                    <li>✓ Múltiples monedas</li>
+                    <li>✓ Exportación de datos</li>
+                </ul>
+
+                <h4>Soporte</h4>
+                <p>¿Necesitas ayuda? Contacta con nosotros en <strong>support@costeosyingenieria.com</strong></p>
+                
+                <h4>Enlaces</h4>
+                <div class="about-links">
+                    <a href="#" class="link">Términos de Servicio</a>
+                    <a href="#" class="link">Política de Privacidad</a>
+                    <a href="#" class="link">Reportar un Bug</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <small>© <span id="year"></span> Costeos & Ingeniería</small>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script src="js/configuracion.js"></script>
+</body>
+</html>
