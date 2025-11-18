@@ -38,6 +38,13 @@
       "password": "jXGL-]fq87sP_sR",
       "email": "moisesperezaello@gmail.com",
       "role": "user"
+    },
+    {
+      "id": 7,
+      "username": "Juan",
+      "password": "abc123",
+      "email": "jpvalentinp@gmail.com",
+      "role": "user"
     }
   ]
 }
