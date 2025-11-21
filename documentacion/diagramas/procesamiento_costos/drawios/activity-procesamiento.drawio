@@ -1,0 +1,62 @@
+<mxfile host="65bd71144e">
+    <diagram name="Actividad - Procesamiento" id="activity-proc-detailed-1">
+        <mxGraphModel dx="114" dy="131" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="start" value="" style="ellipse;shape=startState;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="80" width="20" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="act-upload" value="Subir archivo" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="160" y="70" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="act-parse" value="Parsear Excel" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="160" y="130" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="decision-validate" value="Columnas válidas?" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="160" y="190" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="act-calc" value="Calcular variaciones" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="300" y="190" width="160" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="act-aggregate" value="Resumen y agregados" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="300" y="250" width="160" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="act-report" value="Generar/Exportar reporte" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="300" y="310" width="160" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="end" value="" style="ellipse;shape=endState;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="370" y="410" width="20" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;" parent="1" source="start" target="act-upload" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;" parent="1" source="act-upload" target="act-parse" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;" parent="1" source="act-parse" target="decision-validate" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e4-yes" value="sí" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;" parent="1" source="decision-validate" target="act-calc" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e4-no" value="no" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;dashed=1;" parent="1" source="decision-validate" target="end" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="200" y="380"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;" parent="1" source="act-calc" target="act-aggregate" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;" parent="1" source="act-aggregate" target="act-report" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;" parent="1" source="act-report" target="end" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

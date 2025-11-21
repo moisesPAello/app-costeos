@@ -1,0 +1,49 @@
+<mxfile host="65bd71144e">
+    <diagram name="Estados - Procesamiento" id="state-proc-detailed-1">
+        <mxGraphModel dx="617" dy="467" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="s-idle" value="Inicio" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="100" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="s-uploaded" value="Cargando archivo" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="160" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="s-parsing" value="Parsing" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="220" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="s-validating" value="Validando" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="280" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="s-processing" value="Procesando" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="355" y="280" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="s-reporting" value="Reportando" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="355" y="370" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="s-error" value="Error" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffdddd;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="360" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="t1" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;" parent="1" source="s-idle" target="s-uploaded" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="t2" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;" parent="1" source="s-uploaded" target="s-parsing" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="t3" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;" parent="1" source="s-parsing" target="s-validating" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="t4-ok" value="ok" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;" parent="1" source="s-validating" target="s-processing" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="t4-nok" value="invalido" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;dashed=1;" parent="1" source="s-validating" target="s-error" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="t5" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;" parent="1" source="s-processing" target="s-reporting" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

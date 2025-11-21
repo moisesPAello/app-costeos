@@ -1,0 +1,31 @@
+<mxfile host="65bd71144e">
+    <diagram name="Clases - Procesamiento" id="class-proc-detailed-1">
+        <mxGraphModel dx="814" dy="667" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="class-costrecord" value="&lt;div&gt;&lt;b&gt;RegistroCosto&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;- material: String&lt;br&gt;- ps: Number&lt;br&gt;- qs: Number&lt;br&gt;- precio_real: Number&lt;br&gt;- cantidad_real: Number&lt;br&gt;- unidades_producidas: Number&lt;/div&gt;" style="shape=swimlane;html=1;whiteSpace=wrap;align=left;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="120" width="260" height="180" as="geometry"/>
+                </mxCell>
+                <mxCell id="class-parser" value="&lt;b&gt;ExcelParser&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;+ parse(filePath): Array&lt;br&gt;+ validateColumns(data): Boolean&lt;/div&gt;" style="shape=swimlane;html=1;whiteSpace=wrap;align=left;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="380" y="140" width="260" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="class-calculator" value="&lt;div&gt;&lt;b&gt;CalculadoraCosto&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;+ calculateVariations(record): Object&lt;br&gt;+ summarize(results): Object&lt;/div&gt;" style="shape=swimlane;html=1;whiteSpace=wrap;align=left;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="340" width="260" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="class-report" value="&lt;b&gt;GeneradorReporte&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;+ generateReport(data): File&lt;br&gt;+ prepareCharts(data): Object&lt;/div&gt;" style="shape=swimlane;html=1;whiteSpace=wrap;align=left;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="380" y="340" width="260" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="assoc-parser-record" style="edgeStyle=elbowEdgeStyle;html=1;rounded=0;" parent="1" source="class-parser" target="class-costrecord" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="assoc-calc-record" style="edgeStyle=elbowEdgeStyle;html=1;rounded=0;dashed=1;" parent="1" source="class-calculator" target="class-costrecord" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="assoc-calc-report" style="edgeStyle=elbowEdgeStyle;html=1;rounded=0;" parent="1" source="class-calculator" target="class-report" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

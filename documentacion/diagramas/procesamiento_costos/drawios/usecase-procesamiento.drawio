@@ -1,0 +1,46 @@
+<mxfile host="65bd71144e">
+    <diagram name="Casos de Uso - Procesamiento" id="usecase-proc-detailed-1">
+        <mxGraphModel dx="881" dy="667" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="uc-upload" value="Subir archivo Excel" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="180" y="120" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="uc-validate" value="Validar formato" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="180" y="200" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="uc-calc" value="Calcular variaciones" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="180" y="280" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="uc-report" value="Generar reporte" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="420" y="200" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge-u-upload" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;" parent="1" source="2" target="uc-upload" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge-u-validate" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;" parent="1" source="2" target="uc-validate" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge-a-report" style="edgeStyle=orthogonalEdgeStyle;html=1;rounded=0;" parent="1" source="4" target="uc-report" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge-uc1-uc2" style="edgeStyle=elbowEdgeStyle;html=1;" parent="1" source="uc-upload" target="uc-validate" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge-uc2-uc3" style="edgeStyle=elbowEdgeStyle;html=1;" parent="1" source="uc-validate" target="uc-calc" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge-uc3-uc4" style="edgeStyle=elbowEdgeStyle;html=1;" parent="1" source="uc-calc" target="uc-report" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="Usuario" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+                    <mxGeometry x="30" y="160" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="Administrador" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+                    <mxGeometry x="700" y="200" width="30" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
